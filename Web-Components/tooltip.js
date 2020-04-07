@@ -7,14 +7,21 @@ class Tooltip extends HTMLElement {
     this.shadowRoot.innerHTML = `
         <style>
             div {
-                background-color: black;
-                color: white;
-                position: absolute;
-                z-index: 10;
+              font-weight: normal;
+              background-color: black;
+              color: white;
+              position: absolute;
+              top: 1.5rem;
+              left: 0.75rem;
+              z-index: 10;
+              padding: 0.15rem;
+              border-radius: 3px;
+              box-shadow: 1px 1px 6px rgba(0,0,0,0.26);
             }
 
             :host(.important) {
               background: var(--color-primary, #ccc);
+              padding: 0.15rem;
             }
 
             :host-context(p) {
@@ -51,6 +58,25 @@ class Tooltip extends HTMLElement {
     tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this));
     this.shadowRoot.appendChild(tooltipIcon);
     this.style.position = 'relative';
+  }
+/*
+  Update attribute values!
+*/
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {
+      return;
+    }
+    if (name === 'text') {
+      this._tooltipText = newValue;
+    }
+  }
+/*
+  Like a property of class, but accessible from outside.
+  List attributes names to listen to!! When changed in lightdom,
+  update shadow dom above.
+*/
+  static get observedAttributes() {
+    return ['text'];
   }
 
   _showTooltip() {
