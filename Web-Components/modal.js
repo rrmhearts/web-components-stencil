@@ -71,35 +71,29 @@ class Modal extends HTMLElement {
                 <slot></slot>
             </section>
             <section id="actions">
-                <button>Cancel</button>
-                <button>Okay</button>
+                <button id="cancel-btn">Cancel</button>
+                <button id="confirm-btn">Okay</button>
             </section>
         </div>
     `;
-    /* ^^ Rename slot title through outside light dom ^^
-          Normally the first slot would catch ALL of the content 
-          passed into the modal. In order to prevent this, we assign
-          an attribute to differentiate the two slots.
-
-          Name first slot, all other content will fall into 2nd.
-          ^^ ^^
-    */
-
-    /*
-          How to read the data passed into the slots??
-    */
     const slots = this.shadowRoot.querySelectorAll('slot');
     slots[1].addEventListener('slotchange', event => {
-      // Shows Array of all the content projected into slot.
-      // Text elements are white space around p element.
       console.dir(slots[1].assignedNodes());
     });
+    const cancelButton = this.shadowRoot.querySelector('#cancel-btn');
+    const confirmButton = this.shadowRoot.querySelector('#confirm-btn');
+
+    // on Cancel. Hide modal, dispatch "cancel" event! See _cancel
+    cancelButton.addEventListener('click', this._cancel.bind(this));
+    confirmButton.addEventListener('click', this._confirm.bind(this));
+    // cancelButton.addEventListener('cancel', () => {
+    //   console.log('Cancel inside the component');
+    // });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.hasAttribute('opened')) {
       this.isOpen = true;
-      // The following was replaced by CSS rule :host([opened])
       // this.shadowRoot.querySelector('#backdrop').style.opacity = 1;
       // this.shadowRoot.querySelector('#backdrop').style.pointerEvents = 'all';
       // this.shadowRoot.querySelector('#modal').style.opacity = 1;
@@ -116,6 +110,33 @@ class Modal extends HTMLElement {
   open() {
     this.setAttribute('opened', '');
     this.isOpen = true;
+  }
+
+  hide() {
+    if (this.hasAttribute('opened')) {
+      this.removeAttribute('opened');
+    }
+    this.isOpen = false;
+  }
+
+  _cancel(event) {
+    // event - the event that dispatched this function (click)
+    this.hide();
+    const cancelEvent = new Event('cancel', { 
+      // You need to go up the dom tree, and outside of the shadow DOM!
+      bubbles: true, // should event "BUBBLE UP" Go up the dom tree if not handled here.
+      composed: true // event may leave the shadow dom! if it's in one.
+    });
+    // event.target - the button that was clicked.
+    event.target/*button*/.dispatchEvent(cancelEvent);
+  }
+
+  _confirm() {
+    this.hide();
+    const confirmEvent = new Event('confirm');
+    // Our custom element also has the ability to dispatch an event! 
+    // Not inside the shadow DOM. Better way to do it.
+    this.dispatchEvent(confirmEvent);
   }
 }
 

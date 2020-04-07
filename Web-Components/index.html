@@ -18,9 +18,7 @@
     <script src="modal.js"></script>
   </head>
   <body>
-    <!-- How to set the title? Use MULTIPLE slots!-->
     <uc-modal>
-      <!--Use title slot as named in modal.js-->
       <h1 slot="title">Please Confirm</h1>
       <p>With your confirmation you agree to pay the full amount!</p>
     </uc-modal>
@@ -30,17 +28,21 @@
       const confirmButton = document.querySelector('button');
       const modal = document.querySelector('uc-modal');
 
+      // How do we get Component to create events??
+      modal.addEventListener('confirm', () => {
+        console.log('Confirmed...');
+      });
+
+      modal.addEventListener('cancel', () => {
+        console.log('Cancelled...');
+      });
+
       confirmButton.addEventListener('click', () => {
         //  modal.setAttribute('opened', '');
         if (!modal.isOpen) {
           modal.open();
           console.log('Opening...');
         }
-
-        // Remove modal after 2 seconds. Check functionality..
-        /*setTimeout(() => {
-          modal.removeAttribute('opened');
-        }, 2000);*/
       });
     </script>
   </body>
