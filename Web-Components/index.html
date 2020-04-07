@@ -13,12 +13,20 @@
     <script src="tooltip.js"></script>
   </head>
   <body>
+    <!-- HTML Template not rendored automatically.
+         Blueprint for custom element
+         Not nice to have this chunk in HTML code.
+         Want to encapsalate WC in it's class..
+    -->
+    <template id="tooltip-template">
+      <slot>Some default</slot><span> (?)</span>
+    </template>
     <p>
       <uc-tooltip text="Web Components is a set of standards."
         >Web Components</uc-tooltip
       >
       are awesome!
     </p>
-    <uc-tooltip>Here we go!</uc-tooltip>
+    <uc-tooltip></uc-tooltip>
   </body>
 </html>
