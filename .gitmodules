@@ -1,3 +1,4 @@
 [submodule "Stencil-Play"]
 	path = Stencil-Play
 	url = https://github.com/rrmhearts/Stencil-Play.git
+	ignore = dirty
