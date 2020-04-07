@@ -4,7 +4,6 @@ class Tooltip extends HTMLElement {
     this._tooltipContainer;
     this._tooltipText = 'Some dummy tooltip text.';
     this.attachShadow({ mode: 'open' });
-    // Move HTML template into component.
     this.shadowRoot.innerHTML = `
         <style>
             div {
@@ -13,9 +12,33 @@ class Tooltip extends HTMLElement {
                 position: absolute;
                 z-index: 10;
             }
+
+            :host(.important) {
+              background: #ccc;
+            }
+
+            :host-context(p) {
+              font-weight: bold;
+            }
+
+            .highlight {
+              background-color: red;
+            }
+
+            ::slotted(.highlight) {
+              border-bottom: 1px dotted red;
+            }
+
+            .icon {
+              background: black;
+              color: white;
+              padding: 0.15rem 0.5rem;
+              text-align: center;
+              border-radius: 50%;
+            }
         </style>
         <slot>Some default</slot>
-        <span> (?)</span>
+        <span class="icon">?</span>
     `;
   }
 
