@@ -3,15 +3,20 @@ class Tooltip extends HTMLElement {
     super();
     this._tooltipContainer;
     this._tooltipText = 'Some dummy tooltip text.';
-    /*
-      Isolate the dom of this Element from the real dom!
-      Do not affect our dom by changes to the global styles.
-    */
-    this.attachShadow({ mode: 'open' }); // access shadow dom tree
-
-    // HTML Template, we can access the NORMAL dom from the constructor
-    const template = document.querySelector('#tooltip-template');
-    this.shadowRoot.appendChild(template.content.cloneNode(true)) // deep clone template
+    this.attachShadow({ mode: 'open' });
+    // Move HTML template into component.
+    this.shadowRoot.innerHTML = `
+        <style>
+            div {
+                background-color: black;
+                color: white;
+                position: absolute;
+                z-index: 10;
+            }
+        </style>
+        <slot>Some default</slot>
+        <span> (?)</span>
+    `;
   }
 
   connectedCallback() {
@@ -21,8 +26,6 @@ class Tooltip extends HTMLElement {
     const tooltipIcon = this.shadowRoot.querySelector('span');
     tooltipIcon.addEventListener('mouseenter', this._showTooltip.bind(this));
     tooltipIcon.addEventListener('mouseleave', this._hideTooltip.bind(this));
-    
-    // Property from attaching shadow dom.
     this.shadowRoot.appendChild(tooltipIcon);
     this.style.position = 'relative';
   }
@@ -30,10 +33,6 @@ class Tooltip extends HTMLElement {
   _showTooltip() {
     this._tooltipContainer = document.createElement('div');
     this._tooltipContainer.textContent = this._tooltipText;
-    this._tooltipContainer.style.backgroundColor = 'black';
-    this._tooltipContainer.style.color = 'white';
-    this._tooltipContainer.style.position = 'absolute';
-    this._tooltipContainer.style.zIndex = '10';
     this.shadowRoot.appendChild(this._tooltipContainer);
   }
 
