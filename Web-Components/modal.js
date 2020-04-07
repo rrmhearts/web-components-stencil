@@ -43,7 +43,7 @@ class Modal extends HTMLElement {
                 padding: 1rem;
             }
 
-            header h1 {
+            ::slotted(h1) {
                 font-size: 1.25rem;
             }
 
@@ -65,7 +65,7 @@ class Modal extends HTMLElement {
         <div id="backdrop"></div>
         <div id="modal">
             <header>
-                <h1>Please Confirm</h1>
+                <slot name="title">Please Confirm Payment</slot>
             </header>
             <section id="main">
                 <slot></slot>
@@ -76,11 +76,30 @@ class Modal extends HTMLElement {
             </section>
         </div>
     `;
+    /* ^^ Rename slot title through outside light dom ^^
+          Normally the first slot would catch ALL of the content 
+          passed into the modal. In order to prevent this, we assign
+          an attribute to differentiate the two slots.
+
+          Name first slot, all other content will fall into 2nd.
+          ^^ ^^
+    */
+
+    /*
+          How to read the data passed into the slots??
+    */
+    const slots = this.shadowRoot.querySelectorAll('slot');
+    slots[1].addEventListener('slotchange', event => {
+      // Shows Array of all the content projected into slot.
+      // Text elements are white space around p element.
+      console.dir(slots[1].assignedNodes());
+    });
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.hasAttribute('opened')) {
       this.isOpen = true;
+      // The following was replaced by CSS rule :host([opened])
       // this.shadowRoot.querySelector('#backdrop').style.opacity = 1;
       // this.shadowRoot.querySelector('#backdrop').style.pointerEvents = 'all';
       // this.shadowRoot.querySelector('#modal').style.opacity = 1;
