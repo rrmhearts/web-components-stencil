@@ -23,5 +23,15 @@
    </uc-modal>
    <p>Please confirm your choice.</p>
    <button>Show Details & Confirm</button>
+   <script>
+     const confirmButton = document.querySelector('button');
+     const modal = document.querySelector('uc-modal');
+
+     confirmButton.addEventListener('click', () => {
+      //  modal.setAttribute('opened', '');
+      modal.open();
+      console.log(modal.isOpen);
+     });
+   </script>
   </body>
 </html>
