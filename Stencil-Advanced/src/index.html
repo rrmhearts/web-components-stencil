@@ -7,17 +7,45 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
     />
     <title>Stencil Component Starter</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .side-nav ul {
+        list-style: none;
+      }
+
+      .side-nav li {
+        margin: 1rem 0;
+      }
+
+      .side-nav a {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
     <script src="/build/mycomponent.js"></script>
   </head>
   <body>
-    <uc-side-drawer title="Main Menu"></uc-side-drawer>
+    <uc-side-drawer title="Main Menu">
+      <!-- Nav is passed into the slot. Has to be styled by the light dom-->
+      <nav class="side-nav">
+        <ul>
+          <li><a href="/">A Link</a></li>
+          <li><a href="/">Another Link</a></li>
+          <li><a href="/">A third Link</a></li>
+        </ul>
+      </nav>
+    </uc-side-drawer>
 
-    <script> // Vanilla JS Web Component selector
+    <script>
       const sideDrawer = document.querySelector('uc-side-drawer');
       setTimeout(() => {
-        sideDrawer.title = 'It changed!';
+        sideDrawer.setAttribute('open', '');
+        // sideDrawer.title = 'It changed!';
         // sideDrawer.setAttribute('title', 'It changed via Attribute');
-      }, 3000);
+      }, 2000);
     </script>
   </body>
 </html>
