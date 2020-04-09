@@ -28,8 +28,8 @@
     <script src="/build/mycomponent.js"></script>
   </head>
   <body>
+    <button id="side-drawer-btn">Open Side Menu</button>
     <uc-side-drawer title="Main Menu">
-      <!-- Nav is passed into the slot. Has to be styled by the light dom-->
       <nav class="side-nav">
         <ul>
           <li><a href="/">A Link</a></li>
@@ -40,12 +40,16 @@
     </uc-side-drawer>
 
     <script>
+      const sideDrawerButton = document.querySelector('#side-drawer-btn');
       const sideDrawer = document.querySelector('uc-side-drawer');
-      setTimeout(() => {
-        sideDrawer.setAttribute('open', '');
-        // sideDrawer.title = 'It changed!';
-        // sideDrawer.setAttribute('title', 'It changed via Attribute');
-      }, 2000);
+      sideDrawerButton.addEventListener('click', () => {
+        // Open side drawer on button click..
+        if (!sideDrawer.open) {
+          console.log('Opening side drawer...');
+          sideDrawer.open = true;
+        }
+      });
+
     </script>
   </body>
 </html>
