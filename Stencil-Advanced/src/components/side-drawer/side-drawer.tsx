@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, Method } from '@stencil/core';
 
 @Component({
   tag: 'uc-side-drawer',
@@ -6,28 +6,27 @@ import { Component, Prop, State } from '@stencil/core';
   shadow: true
 })
 export class SideDrawer {
-
-  // Only Changes from INSIDE. 
-  @State() showContactInfo = false; // typescript infers type
+  @State() showContactInfo = false;
 
   @Prop({ reflectToAttr: true }) title: string;
+  @Prop({ reflectToAttr: true, mutable: true }) opened: boolean;
 
-  // Stencil will synchronize everything better with a Prop. Attribute will match prop.
-  // Props are IMMUTABLE inside component. Data always flows on direction, outside to inside!,
-  // ^-- overwrite that by setting mutable flag. Now can internally change.
-  @Prop({ reflectToAttr: true, mutable: true }) open: boolean;
-
-  // Can be named anything. Event triggered could be "onEvent"
   onCloseDrawer() {
-    this.open = false;
+    this.opened = false;
   }
 
   onContentChange(content: string) {
     this.showContactInfo = content === 'contact';
   }
 
+  /* not a publically displayed method of the web component unless explicitly stated. */
+  @Method()
+  open() {
+    this.opened = true;
+  }
+
   render() {
-    let mainContent = <slot />; // Default is slot content.
+    let mainContent = <slot />;
     if (this.showContactInfo) {
       mainContent = (
         <div id="contact-information">
@@ -46,28 +45,29 @@ export class SideDrawer {
       );
     }
 
-    return (
+    return [
+      <div class="backdrop" onClick={this.onCloseDrawer.bind(this)} />,
       <aside>
         <header>
           <h1>{this.title}</h1>
-          <button onClick={this.onCloseDrawer.bind(this) /*refer to SD, not button*/}>X</button>
+          <button onClick={this.onCloseDrawer.bind(this)}>X</button>
         </header>
         <section id="tabs">
           <button
             class={!this.showContactInfo ? 'active' : ''}
-            onClick={this.onContentChange.bind(this, 'nav') /*nav is arg to be passed*/}
+            onClick={this.onContentChange.bind(this, 'nav')}
           >
             Navigation
           </button>
           <button
             class={this.showContactInfo ? 'active' : ''}
-            onClick={this.onContentChange.bind(this, 'contact')/*contact is arg to be passed*/}
+            onClick={this.onContentChange.bind(this, 'contact')}
           >
             Contact
           </button>
         </section>
         <main>{mainContent}</main>
       </aside>
-    );
+    ];
   }
 }

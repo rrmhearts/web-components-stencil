@@ -43,13 +43,16 @@
       const sideDrawerButton = document.querySelector('#side-drawer-btn');
       const sideDrawer = document.querySelector('uc-side-drawer');
       sideDrawerButton.addEventListener('click', () => {
-        // Open side drawer on button click..
-        if (!sideDrawer.open) {
+        if (!sideDrawer.opened) {
           console.log('Opening side drawer...');
-          sideDrawer.open = true;
+          // sideDrawer.open = true;
+          sideDrawer.open();
         }
       });
-
+      setTimeout(() => {
+        // sideDrawer.title = 'It changed!';
+        // sideDrawer.setAttribute('title', 'It changed via Attribute');
+      }, 3000);
     </script>
   </body>
 </html>
