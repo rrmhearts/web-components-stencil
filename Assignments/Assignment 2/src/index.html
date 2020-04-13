@@ -25,10 +25,11 @@
         color: black;
       }
     </style>
-  <script type="module" src="/build/mycomponent.esm.js"></script>
-  <script nomodule src="/build/mycomponent.js"></script>  </head>
+    <script src="/build/mycomponent.js"></script>
+  </head>
   <body>
     <button id="side-drawer-btn">Open Side Menu</button>
+    <p>Let's test this new <uc-tooltip text="We built this before, now it is better!">Tooltip!</uc-tooltip></p>
     <uc-side-drawer title="Main Menu">
       <nav class="side-nav">
         <ul>
@@ -38,8 +39,6 @@
         </ul>
       </nav>
     </uc-side-drawer>
-
-    <p><clickable-tooltip text="hidden tooltip on click. how long should this be" timer=2>Longer list</clickable-tooltip></p>
 
     <script>
       const sideDrawerButton = document.querySelector('#side-drawer-btn');

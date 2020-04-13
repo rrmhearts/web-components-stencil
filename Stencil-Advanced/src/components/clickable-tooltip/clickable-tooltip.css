@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+#tooltip {
+  opacity: 0;
+}
+
+:host([opened]) #tooltip {
+
+  opacity: 1;
+  font-weight: normal;
+  background-color: black;
+  color: white;
+  position: absolute;
+  top: 4.4rem;
+  left: 0.6rem;
+  z-index: 10;
+  padding: 0.15rem;
+  border-radius: 3px;
+  box-shadow: 1px 1px 6px rgba(0,0,0,0.26);
+}
+
+:host([opened]) #arrow {
+  position: absolute;
+  top: 3.95rem;
+  left: 0.5rem;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}

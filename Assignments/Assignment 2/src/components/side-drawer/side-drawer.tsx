@@ -1,4 +1,4 @@
-import { Component, Prop, State, Method, h } from '@stencil/core';
+import { Component, Prop, State, Method } from '@stencil/core';
 
 @Component({
   tag: 'uc-side-drawer',
@@ -19,7 +19,6 @@ export class SideDrawer {
     this.showContactInfo = content === 'contact';
   }
 
-  /* not a publically displayed method of the web component unless explicitly stated. */
   @Method()
   open() {
     this.opened = true;
