@@ -2,3 +2,8 @@
 	path = Stencil-Play
 	url = https://github.com/rrmhearts/Stencil-Play.git
 	ignore = dirty
+
+[submodule "ionic-stencil-conference-app"]
+	path = Examples/ionic-stencil-conference-app
+	url = https://github.com/ionic-team/ionic-stencil-conference-app.git
+	ignore = dirty

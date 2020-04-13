@@ -12,12 +12,13 @@
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "~0.15.1"
+    "@stencil/core": "1.12.3"
   },
   "repository": {
     "type": "git",
