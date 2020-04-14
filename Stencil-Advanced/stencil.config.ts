@@ -1,15 +1,18 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'mycomponent',
+  namespace: 'UdemyCourse',
   outputTargets:[
     {
       type: 'dist'
     },
-    {
-      type: 'www',
-      serviceWorker: null
-    }
+    // {
+    //   type: 'www',
+    //   serviceWorker: null
+    // }
   ],
-  globalStyle: 'src/global/variables.css'
+  globalStyle: 'src/global/variables.css',
+  // bundles: [
+  //   { components: ['']}
+  // ] //code splitting
 };
