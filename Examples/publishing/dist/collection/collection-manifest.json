@@ -1,0 +1,110 @@
+{
+  "components": [
+    {
+      "tag": "uc-spinner",
+      "dependencies": [],
+      "componentClass": "Spinner",
+      "componentPath": "components/spinner/spinner.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/spinner/spinner.css"
+          ]
+        }
+      },
+      "shadow": true
+    },
+    {
+      "tag": "uc-stock-finder",
+      "dependencies": [
+        "uc-spinner"
+      ],
+      "componentClass": "StockFinder",
+      "componentPath": "components/stock-finder/stock-finder.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/stock-finder/stock-finder.css"
+          ]
+        }
+      },
+      "states": [
+        {
+          "name": "loading"
+        },
+        {
+          "name": "searchResults"
+        }
+      ],
+      "events": [
+        {
+          "event": "ucSymbolSelected"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "uc-stock-price",
+      "dependencies": [
+        "uc-spinner"
+      ],
+      "componentClass": "StockPrice",
+      "componentPath": "components/stock-price/stock-price.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/stock-price/stock-price.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "stockSymbol",
+          "type": "String",
+          "mutable": true,
+          "reflectToAttr": true,
+          "attr": "stock-symbol",
+          "watch": [
+            "stockSymbolChanged"
+          ]
+        }
+      ],
+      "states": [
+        {
+          "name": "error"
+        },
+        {
+          "name": "fetchedPrice"
+        },
+        {
+          "name": "loading"
+        },
+        {
+          "name": "stockInputValid"
+        },
+        {
+          "name": "stockUserInput"
+        }
+      ],
+      "listeners": [
+        {
+          "event": "body:ucSymbolSelected",
+          "method": "onStockSymbolSelected",
+          "passive": false,
+          "capture": false
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "shadow": true
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.15.2",
+    "typescriptVersion": "2.9.2"
+  },
+  "bundles": []
+}
