@@ -9,17 +9,17 @@
     <link rel="stylesheet" href="/build/mycomponent.css">
     <title>Stencil Component Starter</title>
     <script type="module" src="/build/mycomponent.esm.js"></script>
-    <script nomodule src="/build/mycomponent.js"></script>  </head>
+    <script nomodule src="/build/mycomponent.js"></script>
+  </head>
   <body>
-    <uc-stock-price ></uc-stock-price>
-    <uc-stock-price stock-symbol="PER"></uc-stock-price>
+    <uc-stock-price stock-symbol="AAPL"></uc-stock-price>
     <uc-stock-finder></uc-stock-finder>
-    <script>
-      // Listen for event emitted by stock finder!
+
+    <!-- <script>
       const stockFinderEl = document.querySelector('uc-stock-finder');
       stockFinderEl.addEventListener('ucSymbolSelected', event => {
         console.log(event);
       });
-    </script>
+    </script> -->
   </body>
 </html>

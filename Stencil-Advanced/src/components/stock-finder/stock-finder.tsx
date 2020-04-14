@@ -12,7 +12,7 @@ export class StockFinder {
 
   @State() searchResults: { symbol: string; name: string }[] = [];
 
-  // A custom event.
+  // A custom event. Will Bubble up, out of shadow dom.
   @Event({ bubbles: true, composed: true }) ucSymbolSelected: EventEmitter<string>;
 
   onFindStocks(event: Event) {
