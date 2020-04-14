@@ -129,15 +129,7 @@ export class StockPrice {
       dataContent = <p>Price: ${this.fetchedPrice}</p>;
     }
     if (this.loading) {
-      // Setup Spinner!
-      dataContent = (
-        <div class="lds-ring">
-          <div />
-          <div />
-          <div />
-          <div />
-        </div>
-      );
+      dataContent = <uc-spinner/>;
     }
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
@@ -147,7 +139,7 @@ export class StockPrice {
           value={this.stockUserInput}
           onInput={this.onUserInput.bind(this)}
         />
-        <button type="submit" disabled={!this.stockInputValid || this.loading /*no button on loading */}>
+        <button type="submit" disabled={!this.stockInputValid || this.loading}>
           Fetch
         </button>
       </form>,
