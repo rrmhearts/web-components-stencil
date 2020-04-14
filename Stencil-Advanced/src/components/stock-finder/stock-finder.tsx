@@ -4,7 +4,7 @@ import { AV_API_KEY } from '../../global/global';
 
 @Component({
   tag: 'uc-stock-finder',
-  styleUrl: './stock-finder.css',
+  styleUrl: 'stock-finder.css',
   shadow: true
 })
 export class StockFinder {
