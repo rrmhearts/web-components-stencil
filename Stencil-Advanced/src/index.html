@@ -13,6 +13,12 @@
     <uc-stock-price ></uc-stock-price>
     <uc-stock-price stock-symbol="PER"></uc-stock-price>
     <uc-stock-finder></uc-stock-finder>
-
+    <script>
+      // Listen for event emitted by stock finder!
+      const stockFinderEl = document.querySelector('uc-stock-finder');
+      stockFinderEl.addEventListener('ucSymbolSelected', event => {
+        console.log(event);
+      });
+    </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { Component, State, h } from '@stencil/core';
+import { Component, State, Event, EventEmitter, h } from '@stencil/core';
 
 import { AV_API_KEY } from '../../global/global';
 
@@ -11,6 +11,9 @@ export class StockFinder {
   stockNameInput: HTMLInputElement;
 
   @State() searchResults: { symbol: string; name: string }[] = [];
+
+  // A custom event.
+  @Event({ bubbles: true, composed: true }) ucSymbolSelected: EventEmitter<string>;
 
   onFindStocks(event: Event) {
     event.preventDefault();
@@ -30,6 +33,11 @@ export class StockFinder {
       });
   }
 
+  onSelectSymbol(symbol: string) {
+    // Creates instance of event.
+    this.ucSymbolSelected.emit(symbol);
+  }
+
   render() {
     return [
       <form onSubmit={this.onFindStocks.bind(this)}>
@@ -37,8 +45,11 @@ export class StockFinder {
         <button type="submit">Find!</button>
       </form>,
       <ul>
-        {this.searchResults.map(result => (
-          <li><strong>{result.symbol}</strong> - {result.name}</li>
+        {// On click, emitt an event!
+        this.searchResults.map(result => (
+          <li onClick={this.onSelectSymbol.bind(this, result.symbol)}>
+            <strong>{result.symbol}</strong> - {result.name}
+          </li>
         ))}
       </ul>
     ];
