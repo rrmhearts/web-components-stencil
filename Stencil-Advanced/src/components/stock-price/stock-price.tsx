@@ -1,4 +1,6 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, State, Element, h } from '@stencil/core';
+
+import { AV_API_KEY } from '../../global/global';
 
 @Component({
   tag: 'uc-stock-price',
@@ -6,20 +8,25 @@ import { Component, h, State } from '@stencil/core';
   shadow: true
 })
 export class StockPrice {
+  stockInput: HTMLInputElement;
+
+  @Element() el: HTMLElement; // HOST Element in light dom.
+
   @State() fetchedPrice: number;
 
   onFetchStockPrice(event: Event) {
     event.preventDefault();
-    // Modern browser fetch API. Dummy fetch microsoft
+    // This line is replaced by reference in form.
+    // const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
+    const stockSymbol = this.stockInput.value;
     fetch(
-      'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo'
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`
     )
       .then(res => {
         return res.json();
       })
       .then(parsedRes => {
-        // console.log(parsedRes); // see format
-        this.fetchedPrice = /*number*/+parsedRes['Global Quote']['05. price']; // access object field which has white space.
+        this.fetchedPrice = +parsedRes['Global Quote']['05. price'];
       })
       .catch(err => {
         console.log(err);
@@ -27,10 +34,9 @@ export class StockPrice {
   }
 
   render() {
-    // When state changes, this re-renders.
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
-        <input id="stock-symbol" />
+        <input id="stock-symbol" ref={/*stencil trick*/ el => (this.stockInput = el)} />
         <button type="submit">Fetch</button>
       </form>,
       <div>
