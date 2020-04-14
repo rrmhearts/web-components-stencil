@@ -1,4 +1,4 @@
-import { Component, State, Element, h } from '@stencil/core';
+import { Component, State, Element, Prop, h } from '@stencil/core';
 
 import { AV_API_KEY } from '../../global/global';
 
@@ -13,17 +13,15 @@ export class StockPrice {
   @Element() el: HTMLElement;
 
   @State() fetchedPrice: number;
-
-  /* Two way binding for error handling */
   @State() stockUserInput: string;
   @State() stockInputValid = false;
   @State() error: string;
 
-  onUserInput(event: Event) {
-    // Set variable to actual user input.
-    this.stockUserInput = (event.target as HTMLInputElement).value;
+  /*passed in as stock-symbol. Stencil auto converts to stockSymbol! */
+  @Prop() stockSymbol: string;
 
-    // Do all error checking!
+  onUserInput(event: Event) {
+    this.stockUserInput = (event.target as HTMLInputElement).value;
     if (this.stockUserInput.trim() !== '') {
       this.stockInputValid = true;
     } else {
@@ -35,23 +33,55 @@ export class StockPrice {
     event.preventDefault();
     // const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement).value;
     const stockSymbol = this.stockInput.value;
+    this.fetchStockPrice(stockSymbol);
+  }
+/*
+  Lifecycle Hooks like React. Pass stockSymbol into element attribute
+  dash case is converted to camel case..
+*/
+  componentWillLoad() {
+    console.log('componentWillLoad');
+    console.log(this.stockSymbol);
+  }
+
+  componentDidLoad() {
+    console.log('componentDidLoad');
+    if (this.stockSymbol) {
+      this.fetchStockPrice(this.stockSymbol);
+      this.stockUserInput = this.stockSymbol;
+    }
+  }
+
+  componentWillUpdate() {
+    console.log('componentWillUpdate');
+  }
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+
+  componentDidUnload() {
+    console.log('componentDidUnload');
+  }
+
+
+  fetchStockPrice(stockSymbol: string) {
     fetch(
       `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KEY}`
     )
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Invalid!');
-        } // check for 400 errors... throw new Error
+        }
         return res.json();
       })
       .then(parsedRes => {
-        // Error checking with this particular api.
-        if (!parsedRes['Global Quote']) {
-          throw new Error('Invalid symbol!');
-        } else if (parsedRes['Error Message']) {
+        if (parsedRes['Error Message']) {
           throw new Error(parsedRes['Error Message']);
         }
-
+        if (!parsedRes['Global Quote']) {
+          throw new Error('Invalid symbol!');
+        }
         this.error = null;
         this.fetchedPrice = +parsedRes['Global Quote']['05. price'];
       })
@@ -72,8 +102,8 @@ export class StockPrice {
         <input
           id="stock-symbol"
           ref={el => (this.stockInput = el)}
-          value={this.stockUserInput /*binding*/}
-          onInput={this.onUserInput.bind(this)/*update value in var*/}
+          value={this.stockUserInput}
+          onInput={this.onUserInput.bind(this)}
         />
         <button type="submit" disabled={!this.stockInputValid}>
           Fetch
